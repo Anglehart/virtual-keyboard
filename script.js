@@ -1,5 +1,6 @@
-const SHIFT = false;
-const CAPSLOCK = false;
+const ISSHIFT = false;
+const ISCAPSLOCK = false;
+const ENGLISH = true;
 
 function createLetter(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, letterRow) {
   const letter = document.createElement('div');
@@ -13,11 +14,35 @@ function createLetter(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, l
   letter.id = keyCode;
 }
 
-function createSpecial(keyEng, keyCode, specialRow) {
+function createCommand(keyEng, keyCode, commandRow) {
+  const commandKey = document.createElement('div');
+  document.getElementById(`row${commandRow}`).append(commandKey);
+  commandKey.className = 'command';
+  commandKey.innerHTML = keyEng;
+  commandKey.id = keyCode;
+}
+
+function createNumber(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, numberRow) {
+  const numberKey = document.createElement('div');
+  document.getElementById(`row${numberRow}`).append(numberKey);
+  numberKey.className = 'number';
+  numberKey.innerHTML = keyDownEng;
+  numberKey.keyDownEng = keyDownEng;
+  numberKey.keyUpperEng = keyUpperEng;
+  numberKey.keyDownRu = keyDownRu;
+  numberKey.keyUpperRu = keyUpperRu;
+  numberKey.id = keyCode;
+}
+
+function createSpecial(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, specialRow) {
   const specialKey = document.createElement('div');
   document.getElementById(`row${specialRow}`).append(specialKey);
   specialKey.className = 'special';
-  specialKey.innerHTML = keyEng;
+  specialKey.innerHTML = keyDownEng;
+  specialKey.keyDownEng = keyDownEng;
+  specialKey.keyUpperEng = keyUpperEng;
+  specialKey.keyDownRu = keyDownRu;
+  specialKey.keyUpperRu = keyUpperRu;
   specialKey.id = keyCode;
 }
 
@@ -46,21 +71,21 @@ function createRows() {
 }
 
 function createKeyboard() {
-  createLetter('`', '~', 'ё', 'Ё', 'Backquote', 1);
-  createLetter('1', '!', '1', '!', 'Digit1', 1);
-  createLetter('2', '@', '2', '"', 'Digit2', 1);
-  createLetter('3', '#', '3', '№', 'Digit3', 1);
-  createLetter('4', '$', '4', ';', 'Digit4', 1);
-  createLetter('5', '%', '5', '%', 'Digit5', 1);
-  createLetter('6', '^', '6', ':', 'Digit6', 1);
-  createLetter('7', '&', '7', '?', 'Digit7', 1);
-  createLetter('8', '*', '8', '*', 'Digit8', 1);
-  createLetter('9', '(', '9', '(', 'Digit9', 1);
-  createLetter('0', ')', '0', ')', 'Digit0', 1);
-  createLetter('-', '_', '-', '_', 'Minus', 1);
-  createLetter('=', '+', '=', '+', 'Equal', 1);
-  createSpecial('Backspace', 'Backspace', 1);
-  createSpecial('Tab', 'Tab', 2);
+  createSpecial('`', '~', 'ё', 'Ё', 'Backquote', 1);
+  createNumber('1', '!', '1', '!', 'Digit1', 1);
+  createNumber('2', '@', '2', '"', 'Digit2', 1);
+  createNumber('3', '#', '3', '№', 'Digit3', 1);
+  createNumber('4', '$', '4', ';', 'Digit4', 1);
+  createNumber('5', '%', '5', '%', 'Digit5', 1);
+  createNumber('6', '^', '6', ':', 'Digit6', 1);
+  createNumber('7', '&', '7', '?', 'Digit7', 1);
+  createNumber('8', '*', '8', '*', 'Digit8', 1);
+  createNumber('9', '(', '9', '(', 'Digit9', 1);
+  createNumber('0', ')', '0', ')', 'Digit0', 1);
+  createSpecial('-', '_', '-', '_', 'Minus', 1);
+  createSpecial('=', '+', '=', '+', 'Equal', 1);
+  createCommand('Backspace', 'Backspace', 1);
+  createCommand('Tab', 'Tab', 2);
   createLetter('q', 'Q', 'й', 'Й', 'KeyQ', 2);
   createLetter('w', 'W', 'ц', 'Ц', 'KeyW', 2);
   createLetter('e', 'E', 'у', 'У', 'KeyE', 2);
@@ -71,10 +96,10 @@ function createKeyboard() {
   createLetter('i', 'I', 'ш', 'Ш', 'KeyI', 2);
   createLetter('o', 'O', 'щ', 'Щ', 'KeyO', 2);
   createLetter('p', 'P', 'з', 'З', 'KeyP', 2);
-  createLetter('[', '{', 'х', 'Х', 'BracketLeft', 2);
-  createLetter(']', '}', 'ъ', 'Ъ', 'BracketRight', 2);
-  createLetter('\\', '|', '\\', '/', 'Backslash', 2);
-  createSpecial('Caps Lock', 'CapsLock', 3);
+  createSpecial('[', '{', 'х', 'Х', 'BracketLeft', 2);
+  createSpecial(']', '}', 'ъ', 'Ъ', 'BracketRight', 2);
+  createSpecial('\\', '|', '\\', '/', 'Backslash', 2);
+  createCommand('Caps Lock', 'CapsLock', 3);
   createLetter('a', 'A', 'ф', 'Ф', 'KeyA', 3);
   createLetter('s', 'S', 'ы', 'Ы', 'KeyS', 3);
   createLetter('d', 'D', 'в', 'В', 'KeyD', 3);
@@ -84,10 +109,10 @@ function createKeyboard() {
   createLetter('j', 'J', 'о', 'О', 'KeyJ', 3);
   createLetter('k', 'K', 'л', 'Л', 'KeyK', 3);
   createLetter('l', 'L', 'д', 'Д', 'KeyL', 3);
-  createLetter(';', ':', 'ж', 'Ж', 'Semicolon', 3);
-  createLetter("'", '"', 'э', 'Э', 'Quote', 3);
-  createSpecial('Enter', 'Enter', 3);
-  createSpecial('Shift', 'ShiftLeft', 4);
+  createSpecial(';', ':', 'ж', 'Ж', 'Semicolon', 3);
+  createSpecial("'", '"', 'э', 'Э', 'Quote', 3);
+  createCommand('Enter', 'Enter', 3);
+  createCommand('Shift', 'ShiftLeft', 4);
   createLetter('z', 'Z', 'я', 'Я', 'KeyZ', 4);
   createLetter('x', 'X', 'ч', 'Ч', 'KeyX', 4);
   createLetter('c', 'C', 'с', 'С', 'KeyC', 4);
@@ -95,26 +120,26 @@ function createKeyboard() {
   createLetter('b', 'B', 'и', 'И', 'KeyB', 4);
   createLetter('n', 'N', 'т', 'Т', 'KeyN', 4);
   createLetter('m', 'M', 'ь', 'Ь', 'KeyM', 4);
-  createLetter(',', '<', 'б', 'Б', 'Comma', 4);
-  createLetter('.', '>', 'ю', 'Ю', 'Period', 4);
-  createLetter('/', '?', '.', ',', 'Slash', 4);
-  createSpecial('Shift', 'ShiftRight', 4);
-  createSpecial('Ctrl', 'ControlLeft', 5);
-  createSpecial('Win', 'OSLeft', 5);
-  createSpecial('Alt', 'AltLeft', 5);
-  createSpecial(' ', 'Space', 5);
-  createSpecial('Alt', 'AltRight', 5);
-  createSpecial('Del', 'Delete', 5);
-  createSpecial('Menu', 'ContextMenu', 5);
-  createSpecial('Ctrl', 'ControlRight', 5);
-  createSpecial('←', 'ArrowLeft', 5);
-  createSpecial('↑', 'ArrowUp', 5);
-  createSpecial('→', 'ArrowRight', 5);
-  createSpecial('↓', 'ArrowDown', 5);
+  createSpecial(',', '<', 'б', 'Б', 'Comma', 4);
+  createSpecial('.', '>', 'ю', 'Ю', 'Period', 4);
+  createSpecial('/', '?', '.', ',', 'Slash', 4);
+  createCommand('Shift', 'ShiftRight', 4);
+  createCommand('Ctrl', 'ControlLeft', 5);
+  createCommand('Win', 'OSLeft', 5);
+  createCommand('Alt', 'AltLeft', 5);
+  createCommand(' ', 'Space', 5);
+  createCommand('Alt', 'AltRight', 5);
+  createCommand('Del', 'Delete', 5);
+  createCommand('Menu', 'ContextMenu', 5);
+  createCommand('Ctrl', 'ControlRight', 5);
+  createCommand('←', 'ArrowLeft', 5);
+  createCommand('↑', 'ArrowUp', 5);
+  createCommand('→', 'ArrowRight', 5);
+  createCommand('↓', 'ArrowDown', 5);
 }
 
 function createListener() {
-  document.getElementById('keyboard').querySelectorAll('.letter').forEach((el) => el.addEventListener('click', () => {
+  document.getElementById('keyboard').querySelectorAll('.letter, .number, .special').forEach((el) => el.addEventListener('click', () => {
     document.getElementById('textarea').value += el.textContent;
   }));
 }

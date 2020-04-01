@@ -64,8 +64,8 @@ function funOnLoad() {
   createLetter('b', 'B', 'и', 'И', 4);
   createLetter('n', 'N', 'т', 'Т', 4);
   createLetter('m', 'M', 'ь', 'Ь', 4);
-  createLetter(',', '&lt;', 'б', 'Б', 4);
-  createLetter('.', '&gt;', 'ю', 'Ю', 4);
+  createLetter(',', '<', 'б', 'Б', 4);
+  createLetter('.', '>', 'ю', 'Ю', 4);
   createLetter('/', '?', '.', ',', 4);
 
   document.getElementById('keyboard').querySelectorAll('.letter').forEach((el) => el.addEventListener('click', () => {
@@ -77,7 +77,7 @@ function funOnLoad() {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Shift') {
     document.querySelectorAll('.letter').forEach((item) => {
-      item.innerHTML = item.keyUpperEng;
+      item.textContent = item.keyUpperEng;
     });
   } else {
     document.getElementById('textarea').value += event.key;
@@ -87,7 +87,7 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => {
   if (event.key === 'Shift') {
     document.querySelectorAll('.letter').forEach((item) => {
-      item.innerHTML = item.keyDownEng;
+      item.textContent = item.keyDownEng;
     });
   }
 });

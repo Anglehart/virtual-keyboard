@@ -1,99 +1,95 @@
-class CreateLetter {
-  constructor(letterKey) {
-    this.letterKey = letterKey;
-    this.letterClass = 'letter';
-  }
-
-  create(row, letterId) {
-    const letter = document.createElement('div');
-    if (letterId) {
-      letter.id = letterId;
-    } else {
-      letter.id = `letter-${this.letterKey}`;
-    }
-    document.getElementById(`row${row}`).append(letter);
-    letter.className = this.letterClass;
-    letter.innerHTML = this.letterKey;
-  }
+function createLetter(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, letterRow) {
+  const letter = document.createElement('div');
+  document.getElementById(`row${letterRow}`).append(letter);
+  letter.className = 'letter';
+  letter.innerHTML = keyDownEng;
+  letter.keyDownEng = keyDownEng;
+  letter.keyUpperEng = keyUpperEng;
+  letter.keyDownRu = keyDownRu;
+  letter.keyUpperRu = keyUpperRu;
 }
 
 function funOnLoad() {
+  // Создание разметки
   const wrapper = document.createElement('div');
   wrapper.className = 'wrapper';
-
   const textarea = document.createElement('textarea');
   textarea.id = 'textarea';
   textarea.rows = '10';
   textarea.cols = '50';
-
   const keyboard = document.createElement('div');
   keyboard.id = 'keyboard';
 
-  const row1 = document.createElement('div');
-  row1.id = 'row1';
-  row1.className = 'rows';
-
-  const row2 = document.createElement('div');
-  row2.id = 'row2';
-  row2.className = 'rows';
-
-  const row3 = document.createElement('div');
-  row3.id = 'row3';
-  row3.className = 'rows';
-
-  const row4 = document.createElement('div');
-  row4.id = 'row4';
-  row4.className = 'rows';
-
-  const row5 = document.createElement('div');
-  row5.id = 'row5';
-  row5.className = 'rows';
-
+  // Добавление разметки
   document.body.append(wrapper);
   document.getElementsByClassName('wrapper')[0].prepend(textarea);
   document.getElementById('textarea').after(keyboard);
-  document.getElementById('keyboard').append(row1);
-  document.getElementById('keyboard').append(row2);
-  document.getElementById('keyboard').append(row3);
-  document.getElementById('keyboard').append(row4);
-  document.getElementById('keyboard').append(row5);
 
+  // Создание и добавление строк
+  const arrRows = [];
+  for (let i = 1; i < 6; i += 1) {
+    arrRows[i] = document.createElement('div');
+    arrRows[i].id = `row${i}`;
+    arrRows[i].className = 'rows';
+    document.getElementById('keyboard').append(arrRows[i]);
+  }
 
-  new CreateLetter('q').create(2);
-  new CreateLetter('w').create(2);
-  new CreateLetter('e').create(2);
-  new CreateLetter('r').create(2);
-  new CreateLetter('t').create(2);
-  new CreateLetter('y').create(2);
-  new CreateLetter('u').create(2);
-  new CreateLetter('i').create(2);
-  new CreateLetter('o').create(2);
-  new CreateLetter('p').create(2);
-  new CreateLetter('[').create(2, 'brOpen1');
-  new CreateLetter(']').create(2, 'brClose1');
+  createLetter('q', 'Q', 'й', 'Й', 2);
+  createLetter('w', 'W', 'ц', 'Ц', 2);
+  createLetter('e', 'E', 'у', 'У', 2);
+  createLetter('r', 'R', 'к', 'R', 2);
+  createLetter('t', 'T', 'е', 'Е', 2);
+  createLetter('y', 'Y', 'н', 'Н', 2);
+  createLetter('u', 'U', 'г', 'Г', 2);
+  createLetter('i', 'I', 'ш', 'Ш', 2);
+  createLetter('o', 'O', 'щ', 'Щ', 2);
+  createLetter('p', 'P', 'з', 'З', 2);
+  createLetter('[', '{', 'х', 'Х', 2);
+  createLetter(']', '}', 'ъ', 'Ъ', 2);
+  createLetter('a', 'A', 'ф', 'Ф', 3);
+  createLetter('s', 'S', 'ы', 'Ы', 3);
+  createLetter('d', 'D', 'в', 'В', 3);
+  createLetter('f', 'F', 'а', 'А', 3);
+  createLetter('g', 'G', 'п', 'П', 3);
+  createLetter('h', 'H', 'р', 'Р', 3);
+  createLetter('j', 'J', 'о', 'О', 3);
+  createLetter('k', 'K', 'л', 'Л', 3);
+  createLetter('l', 'L', 'д', 'Д', 3);
+  createLetter(';', ':', 'ж', 'Ж', 3);
+  createLetter("'", '"', 'э', 'Э', 3);
+  createLetter('z', 'Z', 'я', 'Я', 4);
+  createLetter('x', 'X', 'ч', 'Ч', 4);
+  createLetter('c', 'C', 'с', 'С', 4);
+  createLetter('v', 'V', 'м', 'М', 4);
+  createLetter('b', 'B', 'и', 'И', 4);
+  createLetter('n', 'N', 'т', 'Т', 4);
+  createLetter('m', 'M', 'ь', 'Ь', 4);
+  createLetter(',', '&lt;', 'б', 'Б', 4);
+  createLetter('.', '&gt;', 'ю', 'Ю', 4);
+  createLetter('/', '?', '.', ',', 4);
 
-  new CreateLetter('a').create(3);
-  new CreateLetter('s').create(3);
-  new CreateLetter('d').create(3);
-  new CreateLetter('f').create(3);
-  new CreateLetter('g').create(3);
-  new CreateLetter('h').create(3);
-  new CreateLetter('j').create(3);
-  new CreateLetter('k').create(3);
-  new CreateLetter('l').create(3);
-  new CreateLetter(';').create(3, 'semicolon');
-  new CreateLetter('\'').create(3, 'qoteOne');
-
-  new CreateLetter('z').create(4);
-  new CreateLetter('x').create(4);
-  new CreateLetter('c').create(4);
-  new CreateLetter('v').create(4);
-  new CreateLetter('b').create(4);
-  new CreateLetter('n').create(4);
-  new CreateLetter('m').create(4);
-  new CreateLetter(',').create(4, 'comma');
-  new CreateLetter('.').create(4, 'dot');
-  new CreateLetter('/').create(4, 'slash');
+  document.getElementById('keyboard').querySelectorAll('.letter').forEach((el) => el.addEventListener('click', () => {
+    document.getElementById('textarea').value += el.textContent;
+  }));
 }
+
+// Блок для shift
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Shift') {
+    document.querySelectorAll('.letter').forEach((item) => {
+      item.innerHTML = item.keyUpperEng;
+    });
+  } else {
+    document.getElementById('textarea').value += event.key;
+  }
+});
+
+document.addEventListener('keyup', (event) => {
+  if (event.key === 'Shift') {
+    document.querySelectorAll('.letter').forEach((item) => {
+      item.innerHTML = item.keyDownEng;
+    });
+  }
+});
 
 window.onload = funOnLoad;

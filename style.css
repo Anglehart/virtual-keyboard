@@ -15,11 +15,11 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
-.letter {
-  width: 40px;
-  height: 40px;
+.letter, .special {
+  width: 45px;
+  height: 45px;
   background: #ccc;
-  margin: 10px;
+  margin: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,11 +28,11 @@ body {
   user-select: none;
   border-radius: 3px;
 }
-.letter:hover {
+.letter:hover, .special:hover {
   border: 2px solid black;
   box-sizing: border-box;
 }
-.letter:active {
+.letter:active, .active, .special:active {
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
   color: #fff;
   background: #000;
@@ -41,4 +41,32 @@ body {
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+#Backspace {
+  width: 110px;
+}
+#Backslash {
+  width: 65px;
+}
+#Tab {
+  width: 90px;
+}
+#Enter {
+  width: 110px;
+}
+#CapsLock {
+  width: 100px;
+}
+#ShiftLeft {
+  width: 120px;
+}
+#ShiftRight {
+  width: 145px;
+}
+#ContextMenu {
+  width: 60px;
+}
+#Space {
+  width: 205px;
 }

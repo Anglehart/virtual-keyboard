@@ -36,7 +36,7 @@ body {
   border: 2px solid black;
   box-sizing: border-box;
 }
-.letter:active, .command:active, .number:active, .special:active, .active {
+.letter:active, .command:active, .number:active, .special:active, .active, .long-active {
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
   color: #fff;
   background: #000;

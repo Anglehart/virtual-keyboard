@@ -184,12 +184,12 @@ function checkCapsLock() {
   document.getElementById('CapsLock').addEventListener('click', () => {
     isCapsLock = !(isCapsLock);
     createButtonText();
+    if (isCapsLock) {
+      document.getElementById('CapsLock').classList.add('long-active');
+    } else {
+      document.getElementById('CapsLock').classList.remove('long-active');
+    }
   });
-  if (isCapsLock) {
-    document.getElementById('CapsLock').classList.add('long-active');
-  } else {
-    document.getElementById('CapsLock').classList.remove('long-active');
-  }
 }
 
 function changeLanguage() {
@@ -223,6 +223,11 @@ function createListenerButtons() {
     }
     if (event.code === 'CapsLock') {
       isCapsLock = !(isCapsLock);
+      if (isCapsLock) {
+        document.getElementById('CapsLock').classList.add('long-active');
+      } else {
+        document.getElementById('CapsLock').classList.remove('long-active');
+      }
       createButtonText();
     }
   });

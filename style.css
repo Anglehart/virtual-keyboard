@@ -31,15 +31,18 @@ body {
   cursor: pointer;
   user-select: none;
   border-radius: 3px;
+  border: 2px solid #ccc;
+  box-sizing: border-box;
+  transition: 0.3s;
 }
 .letter:hover, .command:hover, .number:hover, .special:hover {
   border: 2px solid black;
-  box-sizing: border-box;
 }
 .letter:active, .command:active, .number:active, .special:active, .active, .long-active {
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
   color: #fff;
   background: #000;
+  transition: 0.3s;
 }
 .rows {
   display: flex;
@@ -73,4 +76,7 @@ body {
 }
 #Space {
   width: 205px;
+}
+.long-active, .active {
+  border: 2px solid black;
 }

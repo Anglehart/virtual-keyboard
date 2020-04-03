@@ -1,4 +1,5 @@
-let english = true;
+let { language } = window.sessionStorage;
+if (!(language !== undefined)) { language = 'ENG'; }
 let isShift = false;
 let isCapsLock = false;
 
@@ -6,7 +7,6 @@ function createLetter(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, l
   const letter = document.createElement('div');
   document.getElementById(`row${letterRow}`).append(letter);
   letter.className = 'letter';
-  letter.innerHTML = keyDownEng;
   letter.keyDownEng = keyDownEng;
   letter.keyUpperEng = keyUpperEng;
   letter.keyDownRu = keyDownRu;
@@ -26,7 +26,6 @@ function createNumber(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, n
   const numberKey = document.createElement('div');
   document.getElementById(`row${numberRow}`).append(numberKey);
   numberKey.className = 'number';
-  numberKey.innerHTML = keyDownEng;
   numberKey.keyDownEng = keyDownEng;
   numberKey.keyUpperEng = keyUpperEng;
   numberKey.keyDownRu = keyDownRu;
@@ -38,7 +37,6 @@ function createSpecial(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, 
   const specialKey = document.createElement('div');
   document.getElementById(`row${specialRow}`).append(specialKey);
   specialKey.className = 'special';
-  specialKey.innerHTML = keyDownEng;
   specialKey.keyDownEng = keyDownEng;
   specialKey.keyUpperEng = keyUpperEng;
   specialKey.keyDownRu = keyDownRu;
@@ -82,8 +80,8 @@ function createKeyboard() {
   createNumber('8', '*', '8', '*', 'Digit8', 1);
   createNumber('9', '(', '9', '(', 'Digit9', 1);
   createNumber('0', ')', '0', ')', 'Digit0', 1);
-  createSpecial('-', '_', '-', '_', 'Minus', 1);
-  createSpecial('=', '+', '=', '+', 'Equal', 1);
+  createNumber('-', '_', '-', '_', 'Minus', 1);
+  createNumber('=', '+', '=', '+', 'Equal', 1);
   createCommand('Backspace', 'Backspace', 1);
   createCommand('Tab', 'Tab', 2);
   createLetter('q', 'Q', 'й', 'Й', 'KeyQ', 2);
@@ -98,7 +96,7 @@ function createKeyboard() {
   createLetter('p', 'P', 'з', 'З', 'KeyP', 2);
   createSpecial('[', '{', 'х', 'Х', 'BracketLeft', 2);
   createSpecial(']', '}', 'ъ', 'Ъ', 'BracketRight', 2);
-  createSpecial('\\', '|', '\\', '/', 'Backslash', 2);
+  createNumber('\\', '|', '\\', '/', 'Backslash', 2);
   createCommand('Caps Lock', 'CapsLock', 3);
   createLetter('a', 'A', 'ф', 'Ф', 'KeyA', 3);
   createLetter('s', 'S', 'ы', 'Ы', 'KeyS', 3);
@@ -122,7 +120,7 @@ function createKeyboard() {
   createLetter('m', 'M', 'ь', 'Ь', 'KeyM', 4);
   createSpecial(',', '<', 'б', 'Б', 'Comma', 4);
   createSpecial('.', '>', 'ю', 'Ю', 'Period', 4);
-  createSpecial('/', '?', '.', ',', 'Slash', 4);
+  createNumber('/', '?', '.', ',', 'Slash', 4);
   createCommand('Shift', 'ShiftRight', 4);
   createCommand('Ctrl', 'ControlLeft', 5);
   createCommand('Win', 'OSLeft', 5);
@@ -139,36 +137,58 @@ function createKeyboard() {
 }
 
 function createButtonText() {
+  const KEYBOARD = document.getElementById('keyboard');
+  if (language === 'ENG' && !isShift && !isCapsLock) {
+    KEYBOARD.querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyDownEng; });
+  } else if (language === 'ENG' && !isShift && isCapsLock) {
+    KEYBOARD.querySelectorAll('.letter').forEach((el) => { el.textContent = el.keyUpperEng; });
+    KEYBOARD.querySelectorAll('.number, .special').forEach((el) => { el.textContent = el.keyDownEng; });
+  } else if (language === 'ENG' && isShift && isCapsLock) {
+    KEYBOARD.querySelectorAll('.letter').forEach((el) => { el.textContent = el.keyDownEng; });
+    KEYBOARD.querySelectorAll('.number, .special').forEach((el) => { el.textContent = el.keyUpperEng; });
+  } else if (language === 'ENG' && isShift && !isCapsLock) {
+    KEYBOARD.querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyUpperEng; });
+  } else if (language === 'RU' && !isShift && !isCapsLock) {
+    KEYBOARD.querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyDownRu; });
+  } else if (language === 'RU' && !isShift && isCapsLock) {
+    KEYBOARD.querySelectorAll('.number').forEach((el) => { el.textContent = el.keyDownRu; });
+    KEYBOARD.querySelectorAll('.special, .letter').forEach((el) => { el.textContent = el.keyUpperRu; });
+  } else if (language === 'RU' && isShift && isCapsLock) {
+    KEYBOARD.querySelectorAll('.letter, .special').forEach((el) => { el.textContent = el.keyDownRu; });
+    KEYBOARD.querySelectorAll('.number').forEach((el) => { el.textContent = el.keyUpperRu; });
+  } else if (language === 'RU' && isShift && !isCapsLock) {
+    KEYBOARD.querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyUpperRu; });
+  }
+}
+
+function checkShiftMouse() {
+  document.getElementById('ShiftLeft').addEventListener('mousedown', () => {
+    isShift = true;
+    createButtonText();
+  });
+  document.getElementById('ShiftLeft').addEventListener('mouseup', () => {
+    isShift = false;
+    createButtonText();
+  });
+  document.getElementById('ShiftRight').addEventListener('mousedown', () => {
+    isShift = true;
+    createButtonText();
+  });
+  document.getElementById('ShiftRight').addEventListener('mouseup', () => {
+    isShift = false;
+    createButtonText();
+  });
+}
+
+function checkCapsLock() {
+  document.getElementById('CapsLock').addEventListener('click', () => {
+    isCapsLock = !(isCapsLock);
+    createButtonText();
+  });
   if (isCapsLock) {
     document.getElementById('CapsLock').classList.add('long-active');
   } else {
     document.getElementById('CapsLock').classList.remove('long-active');
-  }
-
-  if (english && !isShift && !isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyDownEng; });
-  } else if (english && !isShift && isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.letter').forEach((el) => { el.textContent = el.keyUpperEng; });
-    document.getElementById('keyboard').querySelectorAll('.number, .special').forEach((el) => { el.textContent = el.keyDownEng; });
-  } else if (english && isShift && isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.letter').forEach((el) => { el.textContent = el.keyDownEng; });
-    document.getElementById('keyboard').querySelectorAll('.number, .special').forEach((el) => { el.textContent = el.keyUpperEng; });
-  } else if (english && isShift && !isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyUpperEng; });
-  } else if (!english && !isShift && !isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyDownRu; });
-  } else if (!english && !isShift && isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.number').forEach((el) => { el.textContent = el.keyDownRu; });
-    document.getElementById('keyboard').querySelectorAll('.special, .letter').forEach((el) => { el.textContent = el.keyUpperRu; });
-    document.getElementById('Minus').textContent = document.getElementById('Minus').keyDownRu;
-    document.getElementById('Equal').textContent = document.getElementById('Equal').keyDownRu;
-    document.getElementById('Backslash').textContent = document.getElementById('Backslash').keyDownRu;
-    document.getElementById('Slash').textContent = document.getElementById('Slash').keyDownRu;
-  } else if (!english && isShift && isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.letter, .special').forEach((el) => { el.textContent = el.keyDownRu; });
-    document.getElementById('keyboard').querySelectorAll('.number').forEach((el) => { el.textContent = el.keyUpperRu; });
-  } else if (!english && isShift && !isCapsLock) {
-    document.getElementById('keyboard').querySelectorAll('.letter, .number, .special').forEach((el) => { el.textContent = el.keyUpperRu; });
   }
 }
 
@@ -177,7 +197,8 @@ function changeLanguage() {
   document.addEventListener('keydown', (event) => {
     pressed.push(event.code);
     if ((pressed[0] === 'ControlLeft' && pressed[1] === 'AltLeft') || (pressed[1] === 'ControlLeft' && pressed[0] === 'AltLeft')) {
-      english = !(english);
+      if (language === 'RU') { language = 'ENG'; } else { language = 'RU'; }
+      window.sessionStorage.language = language;
       createButtonText();
     }
   });
@@ -186,28 +207,10 @@ function changeLanguage() {
   });
 }
 
-function createListener() {
-  changeLanguage();
-
+function createListenerButtons() {
   document.getElementById('keyboard').querySelectorAll('.letter, .number, .special').forEach((el) => el.addEventListener('click', () => {
     document.getElementById('textarea').value += el.textContent;
   }));
-  document.getElementById('ShiftLeft').addEventListener('mouseup', () => {
-    isShift = false;
-    createButtonText();
-  });
-  document.getElementById('ShiftLeft').addEventListener('mousedown', () => {
-    isShift = true;
-    createButtonText();
-  });
-  document.getElementById('ShiftRight').addEventListener('mouseup', () => {
-    isShift = false;
-    createButtonText();
-  });
-  document.getElementById('ShiftRight').addEventListener('mousedown', () => {
-    isShift = true;
-    createButtonText();
-  });
 
   document.addEventListener('keydown', (event) => {
     document.getElementById(event.code).classList.add('active');
@@ -230,17 +233,16 @@ function createListener() {
       createButtonText();
     }
   });
-  document.getElementById('CapsLock').addEventListener('click', () => {
-    isCapsLock = !(isCapsLock);
-    createButtonText();
-  });
 }
 
 function funOnLoad() {
   createMarkup();
   createRows();
   createKeyboard();
-  createListener();
+  checkCapsLock();
+  checkShiftMouse();
+  changeLanguage();
+  createListenerButtons();
   createButtonText();
 }
 

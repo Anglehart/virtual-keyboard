@@ -2,6 +2,10 @@ let { language } = window.sessionStorage;
 if (!(language !== undefined)) { language = 'ENG'; }
 let isShift = false;
 let isCapsLock = false;
+const style = document.createElement('link');
+style.rel = 'stylesheet';
+style.href = 'style.css';
+document.head.append(style);
 
 function createLetter(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, letterRow) {
   const letter = document.createElement('div');
@@ -14,12 +18,13 @@ function createLetter(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, l
   letter.id = keyCode;
 }
 
-function createCommand(keyEng, keyCode, commandRow) {
+function createCommand(keyEng, keyCode, commandRow, action) {
   const commandKey = document.createElement('div');
   document.getElementById(`row${commandRow}`).append(commandKey);
   commandKey.className = 'command';
   commandKey.innerHTML = keyEng;
   commandKey.id = keyCode;
+  commandKey.action = action;
 }
 
 function createNumber(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, numberRow) {
@@ -51,11 +56,15 @@ function createMarkup() {
   textarea.id = 'textarea';
   textarea.rows = '10';
   textarea.cols = '50';
+  textarea.setAttribute('readonly', 'readonly');
   const keyboard = document.createElement('div');
   keyboard.id = 'keyboard';
   document.body.append(wrapper);
   document.getElementsByClassName('wrapper')[0].prepend(textarea);
   document.getElementById('textarea').after(keyboard);
+  const message = document.createElement('p');
+  message.innerHTML = 'Клавиатура разработана для Windows. Смена языка - левый CTRL + левый ALT.';
+  document.getElementById('keyboard').after(message);
 }
 
 function createRows() {
@@ -83,7 +92,7 @@ function createKeyboard() {
   createNumber('-', '_', '-', '_', 'Minus', 1);
   createNumber('=', '+', '=', '+', 'Equal', 1);
   createCommand('Backspace', 'Backspace', 1);
-  createCommand('Tab', 'Tab', 2);
+  createCommand('Tab', 'Tab', 2, '\t');
   createLetter('q', 'Q', 'й', 'Й', 'KeyQ', 2);
   createLetter('w', 'W', 'ц', 'Ц', 'KeyW', 2);
   createLetter('e', 'E', 'у', 'У', 'KeyE', 2);
@@ -109,7 +118,7 @@ function createKeyboard() {
   createLetter('l', 'L', 'д', 'Д', 'KeyL', 3);
   createSpecial(';', ':', 'ж', 'Ж', 'Semicolon', 3);
   createSpecial("'", '"', 'э', 'Э', 'Quote', 3);
-  createCommand('Enter', 'Enter', 3);
+  createCommand('Enter', 'Enter', 3, '\n');
   createCommand('Shift', 'ShiftLeft', 4);
   createLetter('z', 'Z', 'я', 'Я', 'KeyZ', 4);
   createLetter('x', 'X', 'ч', 'Ч', 'KeyX', 4);
@@ -125,15 +134,15 @@ function createKeyboard() {
   createCommand('Ctrl', 'ControlLeft', 5);
   createCommand('Win', 'OSLeft', 5);
   createCommand('Alt', 'AltLeft', 5);
-  createCommand(' ', 'Space', 5);
+  createLetter(' ', ' ', ' ', ' ', 'Space', 5);
   createCommand('Alt', 'AltRight', 5);
   createCommand('Del', 'Delete', 5);
   createCommand('Menu', 'ContextMenu', 5);
   createCommand('Ctrl', 'ControlRight', 5);
-  createCommand('←', 'ArrowLeft', 5);
-  createCommand('↑', 'ArrowUp', 5);
-  createCommand('→', 'ArrowRight', 5);
-  createCommand('↓', 'ArrowDown', 5);
+  createLetter('←', '←', '←', '←', 'ArrowLeft', 5);
+  createLetter('↑', '↑', '↑', '↑', 'ArrowUp', 5);
+  createLetter('→', '→', '→', '→', 'ArrowRight', 5);
+  createLetter('↓', '↓', '↓', '↓', 'ArrowDown', 5);
 }
 
 function createButtonText() {
@@ -211,17 +220,24 @@ function createListenerButtons() {
   document.getElementById('keyboard').querySelectorAll('.letter, .number, .special').forEach((el) => el.addEventListener('click', () => {
     document.getElementById('textarea').value += el.textContent;
   }));
+  document.getElementById('keyboard').querySelectorAll('.command').forEach((el) => el.addEventListener('click', () => {
+    if (el.action) {
+      document.getElementById('textarea').value += el.action;
+    } else if (el.id === 'Backspace' || el.id === 'Delete') {
+      document.getElementById('textarea').value = document.getElementById('textarea').value.slice(0, -1);
+    }
+  }));
 
   document.addEventListener('keydown', (event) => {
     document.getElementById(event.code).classList.add('active');
     if (!document.getElementById(event.code).classList.contains('command')) {
       document.getElementById('textarea').value += document.getElementById(event.code).textContent;
-    }
-    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+    } else if (event.code === 'Enter') {
+      document.getElementById('textarea').value += document.getElementById(event.code).action;
+    } else if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       isShift = true;
       createButtonText();
-    }
-    if (event.code === 'CapsLock') {
+    } else if (event.code === 'CapsLock') {
       isCapsLock = !(isCapsLock);
       if (isCapsLock) {
         document.getElementById('CapsLock').classList.add('long-active');
@@ -229,6 +245,12 @@ function createListenerButtons() {
         document.getElementById('CapsLock').classList.remove('long-active');
       }
       createButtonText();
+    } else if (event.code === 'Backspace' || event.code === 'Delete') {
+      document.getElementById('textarea').value = document.getElementById('textarea').value.slice(0, -1);
+      createButtonText();
+    } else if (event.code === 'Tab') {
+      document.getElementById('textarea').value += document.getElementById(event.code).action;
+      event.returnValue = false;
     }
   });
   document.addEventListener('keyup', (event) => {

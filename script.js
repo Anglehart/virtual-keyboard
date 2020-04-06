@@ -229,6 +229,9 @@ function createListenerButtons() {
   }));
 
   document.addEventListener('keydown', (event) => {
+    if (event.code === 'F5') {
+      return;
+    }
     document.getElementById(event.code).classList.add('active');
     if (!document.getElementById(event.code).classList.contains('command')) {
       document.getElementById('textarea').value += document.getElementById(event.code).textContent;
@@ -254,6 +257,9 @@ function createListenerButtons() {
     }
   });
   document.addEventListener('keyup', (event) => {
+    if (event.code === 'F5') {
+      return;
+    }
     document.getElementById(event.code).classList.remove('active');
     if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       isShift = false;

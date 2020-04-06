@@ -1,8 +1,11 @@
 {
   "globals": {
     "document": true,
-    "foo": true,
-    "window": true
+    "window": true,
+    "props": false
+  },
+  "rules": {
+  "no-param-reassign": 0
   },
   "extends": "airbnb-base"
 }

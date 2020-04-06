@@ -2,10 +2,6 @@ let { language } = window.sessionStorage;
 if (!(language !== undefined)) { language = 'ENG'; }
 let isShift = false;
 let isCapsLock = false;
-const style = document.createElement('link');
-style.rel = 'stylesheet';
-style.href = 'style.css';
-document.head.append(style);
 
 function createLetter(keyDownEng, keyUpperEng, keyDownRu, keyUpperRu, keyCode, letterRow) {
   const letter = document.createElement('div');

@@ -209,10 +209,12 @@ function checkShiftMouse() {
     item.addEventListener('mousedown', () => {
       isShift = true;
       reDraw(keyboardMap);
+      item.classList.add('active');
     });
     item.addEventListener('mouseup', () => {
       isShift = false;
       reDraw(keyboardMap);
+      item.classList.remove('active');
     });
   });
 }

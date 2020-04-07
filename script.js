@@ -146,7 +146,6 @@ const textarea = document.createElement('textarea');
 textarea.id = 'textarea';
 textarea.rows = '10';
 textarea.cols = '50';
-textarea.setAttribute('readonly', 'readonly');
 document.body.append(textarea);
 
 const keyboard = document.createElement('div');
@@ -219,17 +218,52 @@ function checkShiftMouse() {
   });
 }
 
+function getCaretPosition(area) {
+  if (area.selectionStart || area.selectionStart === '0') {
+    return {
+      start: area.selectionStart,
+      end: area.selectionEnd,
+    };
+  }
+  return {
+    start: 0,
+    end: 0,
+  };
+}
+
+function setCaretPosition(ctrl, start, end) {
+  if (ctrl.setSelectionRange) {
+    ctrl.focus();
+    ctrl.setSelectionRange(start, end);
+  }
+}
+
 function handleKeyClick(keyCode) {
-  if (!document.getElementById(keyCode).classList.contains('command')) {
-    textEl.value += document.getElementById(keyCode).textContent;
-  } else if (keyCode === 'Enter') {
-    textEl.value += '\n';
-  } else if (keyCode === 'Backspace' || keyCode === 'Delete') {
-    textEl.value = textEl.value.slice(0, -1);
-  } else if (keyCode === 'Tab') {
-    textEl.value += '\t';
-  } else if (keyCode === 'F5') {
-    return;
+  if (!document.getElementById(keyCode).classList.contains('command') || keyCode === 'Enter' || keyCode === 'Tab') {
+    const stPos = getCaretPosition(textEl).start;
+    const endPos = getCaretPosition(textEl).end;
+    const str1 = textEl.value.substring(0, stPos);
+    const str2 = textEl.value.substring(stPos);
+    let add = '';
+    if (keyCode === 'Enter') {
+      add = '\n';
+    } else if (keyCode === 'Tab') {
+      add = '\t';
+    } else {
+      add = document.getElementById(keyCode).textContent;
+    }
+    textEl.value = str1 + add + str2;
+    setCaretPosition(textEl, stPos + 1, endPos + 1);
+  } else if (keyCode === 'Backspace') {
+    const stPos = getCaretPosition(textEl).start;
+    const endPos = getCaretPosition(textEl).end;
+    textEl.value = textEl.value.substring(0, stPos - 1) + textEl.value.substring(stPos);
+    setCaretPosition(textEl, stPos - 1, endPos - 1);
+  } else if (keyCode === 'Delete') {
+    const stPos = getCaretPosition(textEl).start;
+    const endPos = getCaretPosition(textEl).end;
+    textEl.value = textEl.value.substring(0, stPos) + textEl.value.substring(stPos + 1);
+    setCaretPosition(textEl, stPos, endPos);
   }
   if (keyCode === 'CapsLock') { isCapsLock = !(isCapsLock); }
   if (isCapsLock) {
@@ -242,6 +276,7 @@ function handleKeyClick(keyCode) {
 
 function addKeyboardHandler() {
   document.addEventListener('keydown', (evt) => {
+    evt.preventDefault();
     if (!validKeys.includes(evt.code)) { return; }
     document.getElementById(evt.code).classList.add('active');
     pressed.push(evt.code);
@@ -250,7 +285,6 @@ function addKeyboardHandler() {
       window.sessionStorage.language = language;
     }
     if (evt.code === 'ShiftLeft' || evt.code === 'ShiftRight') { isShift = true; }
-    if (evt.code === 'Tab') { evt.returnValue = false; }
     handleKeyClick(evt.code);
   });
 

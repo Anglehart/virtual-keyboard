@@ -1,8 +1,7 @@
 {
   "globals": {
     "document": true,
-    "window": true,
-    "props": false
+    "window": true
   },
   "rules": {
   "no-param-reassign": 0

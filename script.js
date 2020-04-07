@@ -85,6 +85,9 @@ document.body.append(textarea);
 const keyboard = document.createElement('div');
 keyboard.id = 'keyboard';
 document.body.append(keyboard);
+const message = document.createElement('p');
+message.innerHTML = 'Клавиатура разработана для Windows. Смена языка - левый CTRL + левый ALT.';
+document.getElementById('keyboard').after(message);
 
 const keyboardEl = document.getElementById('keyboard');
 const textEl = document.getElementById('textarea');

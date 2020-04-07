@@ -1,1 +1,3 @@
-console.log (String.fromCharCode('z'.charCodeAt() - 32));
+console.log (String.fromCharCode('2'.charCodeAt() - 16));
+console.log ('['.charCodeAt());
+console.log ('{'.charCodeAt());

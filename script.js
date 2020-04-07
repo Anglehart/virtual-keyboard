@@ -23,7 +23,7 @@ const keyboardMap = [
     ['letter', 'q', 'Q', 'й', 'Й', 'KeyQ'],
     ['letter', 'w', 'W', 'ц', 'Ц', 'KeyW'],
     ['letter', 'e', 'E', 'у', 'У', 'KeyE'],
-    ['letter', 'r', 'R', 'к', 'R', 'KeyR'],
+    ['letter', 'r', 'R', 'к', 'К', 'KeyR'],
     ['letter', 't', 'T', 'е', 'Е', 'KeyT'],
     ['letter', 'y', 'Y', 'н', 'Н', 'KeyY'],
     ['letter', 'u', 'U', 'г', 'Г', 'KeyU'],

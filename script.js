@@ -75,6 +75,73 @@ const keyboardMap = [
     ['letter', '↓', '↓', '↓', '↓', 'ArrowDown']],
 ];
 
+const validKeys = [
+  'Backquote',
+  'Digit1',
+  'Digit2',
+  'Digit3',
+  'Digit4',
+  'Digit5',
+  'Digit6',
+  'Digit7',
+  'Digit8',
+  'Digit9',
+  'Digit0',
+  'Minus',
+  'Equal',
+  'Backspace',
+  'Tab',
+  'KeyQ',
+  'KeyW',
+  'KeyE',
+  'KeyR',
+  'KeyT',
+  'KeyY',
+  'KeyU',
+  'KeyI',
+  'KeyO',
+  'KeyP',
+  'BracketLeft',
+  'BracketRight',
+  'Backslash',
+  'CapsLock',
+  'KeyA',
+  'KeyS',
+  'KeyD',
+  'KeyF',
+  'KeyG',
+  'KeyH',
+  'KeyJ',
+  'KeyK',
+  'KeyL',
+  'Semicolon',
+  'Quote',
+  'Enter',
+  'ShiftLeft',
+  'KeyZ',
+  'KeyX',
+  'KeyC',
+  'KeyV',
+  'KeyB',
+  'KeyN',
+  'KeyM',
+  'Comma',
+  'Period',
+  'Slash',
+  'ShiftRight',
+  'ControlLeft',
+  'OSLeft',
+  'AltLeft',
+  'Space',
+  'AltRight',
+  'Delete',
+  'ContextMenu',
+  'ControlRight',
+  'ArrowLeft',
+  'ArrowUp',
+  'ArrowRight',
+  'ArrowDown']
+
 const textarea = document.createElement('textarea');
 textarea.id = 'textarea';
 textarea.rows = '10';
@@ -173,6 +240,7 @@ function handleKeyClick(keyCode) {
 
 function addKeyboardHandler() {
   document.addEventListener('keydown', (evt) => {
+    if (!validKeys.includes(evt.code)) { return; }
     document.getElementById(evt.code).classList.add('active');
     pressed.push(evt.code);
     if ((pressed[0] === 'ControlLeft' && pressed[1] === 'AltLeft') || (pressed[1] === 'ControlLeft' && pressed[0] === 'AltLeft')) {
@@ -185,6 +253,7 @@ function addKeyboardHandler() {
   });
 
   document.addEventListener('keyup', (evt) => {
+    if (!validKeys.includes(evt.code)) { return; }
     if (evt.code === 'ShiftLeft' || evt.code === 'ShiftRight') { isShift = false; }
     document.getElementById(evt.code).classList.remove('active');
     pressed = [];

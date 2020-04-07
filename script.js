@@ -140,7 +140,7 @@ const validKeys = [
   'ArrowLeft',
   'ArrowUp',
   'ArrowRight',
-  'ArrowDown']
+  'ArrowDown'];
 
 const textarea = document.createElement('textarea');
 textarea.id = 'textarea';
